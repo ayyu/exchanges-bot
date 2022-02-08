@@ -24,3 +24,14 @@ test('prepends "Group" and formats group in bolded markdown', () => {
 	expect(format.group(4)).toBe('**Group 4**');
 	expect(format.group('4')).toBe('**Group 4**');
 })
+
+test('strip various forms of discord markdown', () => {
+	expect(format.stripMarkdown('||'))
+		.toBe('');
+	expect(format.stripMarkdown('Score: ||4/10||'))
+		.toBe('Score: 4/10');
+	expect(format.stripMarkdown('Score: **4/10**'))
+		.toBe('Score: 4/10');
+	expect(format.stripMarkdown('Anime Given: Guardian Hearts **(1/2)**'))
+		.toBe('Anime Given: Guardian Hearts (1/2)');
+})

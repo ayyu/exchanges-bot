@@ -1,54 +1,65 @@
 const format = require('./format');
 
 const regexes = {
-	group: /^Group:\s*([0-9])/i,
-	anime: /^Anime Given:\s*(.+)/i,
-	score: /^Score:\s*\(?([0-9]+\/[0-9]+)\)?/i,
+	group: /^Group:\s*([0-9]+)/i,
+	entry: /^Anime Given:\s*(.+)/i,
+	score: /^Score:\s*\(?(\d{1,3}\/\d{1,3})\)?/i,
 };
 
-const reEntries = /\s+\([0-9/]+\)$/i;
+const reEntry = /\s+\([0-9/]+\)$/i;
 
 /**
- * @typedef {Object} Matches
+ * @typedef {Object} Match
  * @property {string|number} group
- * @property {string} anime
+ * @property {string} entry
  * @property {string} score
  */
 
 /**
  * @param {string} content
- * @returns {Matches|null}
+ * @returns {Match[]|null}
  */
 const matchLines = content => {
 	const lines = splitAndTrim(content, '\n');
-	/** @type {{group: string[], anime: string[], score: string[]}} */
+	/** @type {{group: string[], entry: string[], score: string[]}} */
 	let values = {};
 	for (const property in regexes) {
 		values[property] = lines
-			.filter(line => line.match(regexes[property]))
-			.map(line => {
-				if (property == 'anime') line = line.replace(reEntries, '');
-				return line.replace(regexes[property], '$1');
-			})
+			.map(format.stripMarkdown)
+			.map(line => line.match(regexes[property]))
+			.filter(match => match != null)
+			.map(match => match[1])
+			.map(match => (property == 'entry') ? match.replace(reEntry, '') : match);
 		if (!values[property].length) return null;
-		values[property] = values[property][0];
 	}
-	return values;
+
+	/** @type {Match[]} */
+	let matches = [];
+	for (let i = 0; i < values.entry.length; i++) {
+		matches.push({
+			group: (values.group[i] ?? matches[i - 1].group).trim(),
+			entry: values.entry[i].trim(),
+			score: (values.score[i] ?? matches[i - 1].score).trim(),
+		});
+	}
+
+	return matches;
 };
 
 /**
  * @param {string} post
- * @param {Matches} matches
+ * @param {Match} match
  * @param {Message} trigger
  * @returns {string|null}
  */
-const updateMatchedLine = (message, matches, trigger) => {
+const updateMatchedLine = (message, match, trigger) => {
 	const lines = splitAndTrim(message.content, '\n');
-	if (!lines[0].includes(format.group(matches.group))) return;
+
+	if (!lines[0].includes(format.group(match.group))) return;
 
 	for (let i = 1; i < lines.length; i++) {
-		if (lines[i].toLowerCase() == format.unchecked(matches.anime).toLowerCase()) {
-			const completed = format.completed(matches.anime, matches.score);
+		if (lines[i].toLowerCase() == format.unchecked(match.entry).toLowerCase()) {
+			const completed = format.completed(match.entry, match.score);
 			lines[i] = `${completed} ${trigger.member}`;
 			console.log(`New completion in ${message.guild.name}: ${completed} by ${trigger.member.tag}`);
 			return lines.reduce((edited, line) => edited + line + '\n', '');
