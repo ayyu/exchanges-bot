@@ -15,7 +15,10 @@ const updatePins = async message => {
 			pins.map(async pin => {
 				for (const match of matches) {
 					const updatedPin = updateMatchedLine(pin, match, message);
-					if (updatedPin) await pin.edit(updatedPin);
+					if (updatedPin) {
+						await pin.edit(updatedPin)
+							.then(edited => pin = edited);
+					}
 				}
 			})
 		));
