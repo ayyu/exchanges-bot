@@ -1,16 +1,7 @@
-const { Client, Collection, Intents } = require('discord.js');
-const dotenv = require('dotenv');
+const { Collection } = require('discord.js');
 const { requireCommands } = require('./models/commands')(Collection);
 const keyvs = require('./services/keyv');
-
-dotenv.config();
-
-const token = process.env.DISCORD_TOKEN;
-
-const client = new Client({ intents: [
-	Intents.FLAGS.GUILDS,
-	Intents.FLAGS.GUILD_MESSAGES,
-] });
+const { client, token } = require('./services/discord-client');
 
 client.commands = requireCommands(require('./commands')(keyvs));
 
