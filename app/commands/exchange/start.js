@@ -27,7 +27,7 @@ module.exports = keyvs => {
 
 		const exchangeName = interaction.options.getString(optionName);
 		return interaction.reply({
-			content: `**New exchange started: ${exchangeName}**`,
+			content: `**${exchangeName}**`,
 			fetchReply: true,
 		})
 			.then(reply => reply.pin())
