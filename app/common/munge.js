@@ -2,7 +2,7 @@ const format = require('./format');
 
 const regexes = {
 	group: new RegExp('^Group: ([0-9])', 'i'),
-	anime: new RegExp('^Anime Given: (.+)', 'i'),
+	anime: new RegExp('^Anime Given: (.+)( \\(?([0-9]+/[0-9]+)\\)?)?', 'i'),
 	score: new RegExp('^Score: \\(?([0-9]{1,2}/10)\\)?', 'i'),
 };
 
