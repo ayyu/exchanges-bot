@@ -1,3 +1,5 @@
+const format = require('./format');
+
 const regexes = {
 	group: new RegExp('^Group: ([0-9])', 'i'),
 	anime: new RegExp('^Anime Given: (.+)', 'i'),
@@ -5,8 +7,15 @@ const regexes = {
 };
 
 /**
+ * @typedef {Object} Matches
+ * @property {string|number} group
+ * @property {string} anime
+ * @property {string} score
+ */
+
+/**
  * @param {string} content
- * @returns {{group: string, anime: string, score: string}|null}
+ * @returns {Matches|null}
  */
 const matchLines = content => {
 	const lines = splitAndTrim(content, '\n');
@@ -16,13 +25,30 @@ const matchLines = content => {
 		values[property] = lines
 			.filter(line => line.match(regexes[property]))
 			.map(line => line.replace(regexes[property], '$1'));
-		if (!values[property].length) {
-			return null;
-		} else {
-			values[property] = values[property][0];
-		}
+		if (!values[property].length) return null;
+		values[property] = values[property][0];
 	}
 	return values;
+};
+
+/**
+ * @param {string} post
+ * @param {Matches} matches
+ * @returns {string|null}
+ */
+const updateMatchedLine = (message, matches) => {
+	const lines = splitAndTrim(message.content, '\n');
+	if (!lines[0].includes(format(matches.group))) return;
+
+	for (let i = 1; i < lines.length; i++) {
+		if (lines[i].toLowerCase() == format.unchecked(matches.anime).toLowerCase()) {
+			const completed = format.completed(matches.anime, matches.score);
+			lines[i] = `${completed} ${message.member}`;
+			console.log(`New completion in ${message.guild.name}: ${completed} by ${message.author.tag}`);
+			return lines.reduce((edited, line) => edited + line + '\n', '');
+		}
+	}
+	return;
 };
 
 /**
@@ -34,6 +60,6 @@ const splitAndTrim = (input, delim) => input.split(delim).map(line => line.trim(
 
 module.exports = {
 	regexes,
-	matchLines,
 	splitAndTrim,
+	matchLines, updateMatchedLine,
 };

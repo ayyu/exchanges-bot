@@ -10,14 +10,17 @@ const requireNotThread = model => {
 };
 
 /** @param {Message|Interaction} model */
+const isBotThread = model => {
+	return model.channel.isThread() && model.channel.ownerId == model.client.user.id;
+};
+
+/** @param {Message|Interaction} model */
 const requireBotThread = model => {
-	if (!model.channel.isThread()
-		|| model.channel.ownerId != model.client.user.id) {
-		throw new Error(messages.outThreadError);
-	}
+	if (!isBotThread(model)) throw new Error(messages.outThreadError);
 };
 
 module.exports = {
+	isBotThread,
 	requireNotThread,
 	requireBotThread,
 };
