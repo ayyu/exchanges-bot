@@ -63,7 +63,7 @@ module.exports = () => {
 		const permissions = await buildPermissions(interaction.guild, role);
 		return interaction.client.application.commands.fetch()
 			.then(commands => Promise.all(commands.map(async command => {
-				command.permissions.add({ guild: interaction.guild.id, permissions });
+				command.permissions.set({ guild: interaction.guild.id, permissions });
 			})))
 			.then(() => interaction.reply(`Set exchange manager role to ${role.name}`));
 	};
