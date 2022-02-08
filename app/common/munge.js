@@ -6,7 +6,7 @@ const regexes = {
 	score: /^Score:\s*\(?(\d{1,3}\/\d{1,3})\)?/i,
 };
 
-const reEntry = /\s+\([0-9/]+\)$/i;
+const reEntry = /\s+\([0-9]{1,2}\/[0-9]{1,2}\)$/i;
 
 /**
  * @typedef {Object} Match

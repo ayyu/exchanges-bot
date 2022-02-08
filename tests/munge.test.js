@@ -10,12 +10,12 @@ test('split a string along newlines and remove leading/trailing whitespace', () 
 
 const standardPost =
 `Group: 1
-Anime Given: Sen to Chihiro no Kamikakushi
+Anime Given: Kanon (2006)
 Score: 5/10
 Review: multiline review`;
 const standardMatches = [{
 	group: '1',
-	entry: 'Sen to Chihiro no Kamikakushi',
+	entry: 'Kanon (2006)',
 	score: '5/10'
 }];
 test('munge a normal single post', () => {
