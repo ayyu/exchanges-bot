@@ -20,7 +20,7 @@ module.exports = keyvs => {
 	const execute = async interaction => {
 		requireNotThread(interaction);
 
-		await keyvs.channel.get('channel').then(channel => {
+		await keyvs.channel.get(interaction.guild.id).then(channel => {
 			if (!channel || channel == interaction.channelId) return;
 			throw new Error(messages.wrongChannelError);
 		});

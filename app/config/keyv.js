@@ -1,5 +1,4 @@
 const dotenv = require('dotenv');
-const KeyvStore = require('@keyv/sqlite');
 
 dotenv.config();
 
@@ -9,6 +8,4 @@ const ssl = {
 	rejectUnauthorized: false,
 };
 
-const store = new KeyvStore({ uri, ssl });
-
-module.exports = { store };
+module.exports = { uri, options: { ssl } };
