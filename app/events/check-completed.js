@@ -10,10 +10,10 @@ const updatePins = async message => {
 	const matches =  matchLines(message.content);
 	if (!matches) return;
 
-	await message.channel.messages.fetchPinned(false)
-		.then(pins => Promise.all(
+	return message.channel.messages.fetchPinned(false)
+		.then(async pins => Promise.all(
 			pins.map(async pin => Promise.all(
-				matches.map(async match => {
+				matches.map(match => {
 					const updatedPin = updateMatchedLine(pin, match, message);
 					if (updatedPin) return pin.edit(updatedPin);
 				})
