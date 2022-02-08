@@ -13,7 +13,7 @@ const updatePins = async message => {
 	await message.channel.messages.fetchPinned(false)
 		.then(pins => Promise.all(
 			pins.map(async pin => {
-				const updatedPin = updateMatchedLine(pin, matches);
+				const updatedPin = updateMatchedLine(pin, matches, message);
 				if (updatedPin) return pin.edit(updatedPin);
 			})
 		));

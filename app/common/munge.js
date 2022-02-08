@@ -34,17 +34,18 @@ const matchLines = content => {
 /**
  * @param {string} post
  * @param {Matches} matches
+ * @param {Message} trigger
  * @returns {string|null}
  */
-const updateMatchedLine = (message, matches) => {
+const updateMatchedLine = (message, matches, trigger) => {
 	const lines = splitAndTrim(message.content, '\n');
 	if (!lines[0].includes(format.group(matches.group))) return;
 
 	for (let i = 1; i < lines.length; i++) {
 		if (lines[i].toLowerCase() == format.unchecked(matches.anime).toLowerCase()) {
 			const completed = format.completed(matches.anime, matches.score);
-			lines[i] = `${completed} ${message.member}`;
-			console.log(`New completion in ${message.guild.name}: ${completed} by ${message.author.tag}`);
+			lines[i] = `${completed} ${trigger.member}`;
+			console.log(`New completion in ${message.guild.name}: ${completed} by ${trigger.member.tag}`);
 			return lines.reduce((edited, line) => edited + line + '\n', '');
 		}
 	}
