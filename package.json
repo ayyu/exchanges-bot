@@ -1,22 +1,28 @@
 {
   "name": "ftf-exchange-bot",
   "version": "1.0.0",
-  "description": "Updates lists of given anime as exchange watches get posted",
+  "description": "Updates lists of given entries for each exchange post",
   "main": "app/index.js",
   "engines": {
     "node": "16.x",
     "npm": "*"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayyu/exchange-bot"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.8.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-plugin-jest": "^26.1.0",
     "eslint-plugin-jsdoc": "^37.8.0",
-    "npm-check-updates": "^12.2.1"
+    "jest": "^27.5.1"
   },
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
@@ -27,8 +33,6 @@
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "keyv": "^4.1.1",
-    "keyv-firestore": "^1.1.1",
-    "node.js": "^0.0.1-security",
-    "sqlite3": "^4.2.0"
+    "node.js": "^0.0.1-security"
   }
 }
