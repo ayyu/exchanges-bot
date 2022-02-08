@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node app/index.js"
+    "start": "node app/index.js",
+    "postinstall": "node app/scripts/register-commands.js"
   },
   "repository": {
     "type": "git",
