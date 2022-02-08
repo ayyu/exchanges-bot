@@ -1,5 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config();
+if (process.env.NODE_ENV != 'production') require('dotenv').config();
 
 const uri = process.env.DATABASE_URL;
 const ssl = {
