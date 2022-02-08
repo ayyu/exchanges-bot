@@ -1,10 +1,12 @@
 const format = require('./format');
 
 const regexes = {
-	group: new RegExp('^Group: ([0-9])', 'i'),
-	anime: new RegExp('^Anime Given: (.+?)^( \\([0-9]+/[0-9]+\\))', 'i'),
-	score: new RegExp('^Score: \\(?([0-9]{1,2}/10)\\)?', 'i'),
+	group: /^Group:\s*([0-9])/i,
+	anime: /^Anime Given:\s*(.+)/i,
+	score: /^Score:\s*\(?([0-9]+\/[0-9]+)\)?/i,
 };
+
+const reEntries = /\s+\([0-9/]+\)$/i;
 
 /**
  * @typedef {Object} Matches
@@ -24,7 +26,10 @@ const matchLines = content => {
 	for (const property in regexes) {
 		values[property] = lines
 			.filter(line => line.match(regexes[property]))
-			.map(line => line.replace(regexes[property], '$1'));
+			.map(line => {
+				if (property == 'anime') line = line.replace(reEntries, '');
+				return line.replace(regexes[property], '$1');
+			})
 		if (!values[property].length) return null;
 		values[property] = values[property][0];
 	}
