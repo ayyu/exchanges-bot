@@ -38,7 +38,7 @@ const matchLines = content => {
  */
 const updateMatchedLine = (message, matches) => {
 	const lines = splitAndTrim(message.content, '\n');
-	if (!lines[0].includes(format(matches.group))) return;
+	if (!lines[0].includes(format.group(matches.group))) return;
 
 	for (let i = 1; i < lines.length; i++) {
 		if (lines[i].toLowerCase() == format.unchecked(matches.anime).toLowerCase()) {
