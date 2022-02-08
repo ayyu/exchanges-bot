@@ -1,0 +1,6 @@
+config.json
+node_modules
+.env
+*.sqlite
+.vscode
+.eslintrc.*

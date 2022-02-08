@@ -1,0 +1,23 @@
+const messages = require('../config/messages');
+/**
+ * @typedef {import('discord.js').Interaction} Interaction
+ * @typedef {import('discord.js').Message} Message
+ */
+
+/** @param {Message|Interaction} model */
+const requireNotThread = model => {
+	if (model.channel.isThread()) throw new Error(messages.inThreadError);
+};
+
+/** @param {Message|Interaction} model */
+const requireBotThread = model => {
+	if (!model.channel.isThread()
+		|| model.channel.ownerId != model.client.user.id) {
+		throw new Error(messages.outThreadError);
+	}
+};
+
+module.exports = {
+	requireNotThread,
+	requireBotThread,
+};
