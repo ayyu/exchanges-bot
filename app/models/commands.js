@@ -82,10 +82,10 @@ module.exports = Collection => {
 	/**
 	 * @param {Array<Command>} commands
 	 * @param {RequireCallback} callback
-	 * @returns {Collection<string, Command>}
+	 * @returns {Collection<string, DiscordCommand>}
 	 */
 	function requireCommands(commands, callback = null) {
-		/** @type {Collection<string, Command>} */
+		/** @type {Collection<string, DiscordCommand>} */
 		const collection = new Collection();
 		for (const command of commands) {
 			if (callback) callback(command);

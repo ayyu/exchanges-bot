@@ -11,17 +11,13 @@ const updatePins = async message => {
 	if (!matches) return;
 
 	return message.channel.messages.fetchPinned(false)
-		.then(async pins => Promise.all(
-			pins.map(async pin => {
-				for (const match of matches) {
-					const updatedPin = updateMatchedLine(pin, match, message);
-					if (updatedPin) {
-						await pin.edit(updatedPin)
-							.then(edited => pin = edited);
-					}
-				}
-			})
-		));
+		.then(async pins => Promise.all(pins.map(async pin => {
+			for (const match of matches) {
+				const updatedContents = updateMatchedLine(pin, match, message);
+				if (updatedContents) await pin.edit(updatedContents)
+					.then(edited => pin = edited);
+			}
+		})));
 };
 
 module.exports = new DiscordEvent('messageCreate', false, updatePins);
