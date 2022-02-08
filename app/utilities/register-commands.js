@@ -14,15 +14,9 @@ const registerCommands = async client => {
 	const commands = require('../commands')().map(command => command.data.toJSON());
 	const rest = new REST({ version: '9' }).setToken(token);
 
-	/** @param {Guild} guild */
-	const registerGuildCommands = async guild => {
-		return rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: commands })
-			.then(() => console.log(`Successfully registered application commands in ${guild.name}.`))
-			.catch(console.error);
-	};
-
-	return client.guilds.fetch()
-		.then(guilds => Promise.all(guilds.map(registerGuildCommands)));
+	return rest.put(Routes.applicationCommands(client.user.id), { body: commands })
+		.then(() => console.log('Successfully registered global application commands.'))
+		.catch(console.error);
 };
 
 module.exports = registerCommands;
