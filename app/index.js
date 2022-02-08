@@ -17,3 +17,5 @@ client.on('interactionCreate', async interaction => {
 	if (!command) return;
 	return command.run(interaction);
 });
+
+client.login();
