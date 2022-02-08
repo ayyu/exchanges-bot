@@ -1,12 +1,12 @@
 const format = require('./format');
 
 const regexes = {
-	group: /^Group:\s*([0-9]+)/i,
-	entry: /^Anime Given:\s*(.+)/i,
-	score: /^Score:\s*\(?([\d\.]+\/\d+)\)?/i,
+	group: new RegExp(`^${format.config.groupPrefix}\\s*([0-9]+)`, 'i'),
+	entry: new RegExp(`^${format.config.entryPrefix}\\s*(.+)`, 'i'),
+	score: new RegExp(`^${format.config.scorePrefix}\\s*\\(?([\\d\\.]+/\\d+)\\)?`, 'i'),
 };
 
-const reEntry = /\s+\([0-9]+\/[0-9]+\)$/i;
+const reEntry = new RegExp(`\\s+\\([0-9]+/[0-9]+\\)$`, 'i');
 
 /**
  * @typedef {Object} Match

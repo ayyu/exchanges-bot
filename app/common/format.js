@@ -1,14 +1,16 @@
-/** @param {string} line */
-const unchecked = line => `☐ ${line}`;
+const config = require('../config/format');
 
 /** @param {string} line */
-const checked = line => `☒ ${line}`;
+const unchecked = line => `${config.uncheckSymbol} ${line}`;
+
+/** @param {string} line */
+const checked = line => `${config.checkSymbol} ${line}`;
 
 /**
  * @param {string} line
  * @param {string} score
  */
-const scored = (line, score) => `${line} **(${score})**`;
+const scored = (line, score) => `${line} ${config.scoreFormat.replace(config.scoreToken, score)}`;
 
 /**
  * @param {string} line
@@ -17,7 +19,7 @@ const scored = (line, score) => `${line} **(${score})**`;
 const completed = (line, score) => scored(checked(line), score);
 
 /** @param {string|number} number */
-const group = number => `**Group ${number}**`;
+const group = number => config.groupFormat.replace(config.groupToken, number);
 
 const markdownTokens = [
 	'||',
@@ -39,4 +41,5 @@ module.exports = {
 	checked, unchecked,
 	scored,
 	stripMarkdown,
+	config,
 };

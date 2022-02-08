@@ -1,5 +1,6 @@
 const munge = require('../app/common/munge');
 const format = require('../app/common/format');
+const config = format.config;
 
 test('split a string along newlines and remove leading/trailing whitespace', () => {
 	expect(munge.splitAndTrim(
@@ -9,9 +10,9 @@ test('split a string along newlines and remove leading/trailing whitespace', () 
 });
 
 const standardPost =
-`Group: 1
-Anime Given: Kanon (2006)
-Score: 5/10
+`${config.groupPrefix} 1
+${config.entryPrefix} Kanon (2006)
+${config.scorePrefix} 5/10
 Review: multiline review`;
 const standardMatches = [{
 	group: '1',
@@ -23,9 +24,9 @@ test('munge a normal single post', () => {
 });
 
 const weirdPost =
-`Group: 1
-Anime Given: Sen to Chihiro no Kamikakushi (1/2)
-Score: (69/100)`;
+`${config.groupPrefix} 1
+${config.entryPrefix} Sen to Chihiro no Kamikakushi (1/2)
+${config.scorePrefix} **(69/100)**`;
 const weirdMatches = [{
 	group: '1',
 	entry: 'Sen to Chihiro no Kamikakushi',
@@ -37,15 +38,15 @@ test('munge a weird post with (x/y) entries', () => {
 
 const mixedPost =
 `
-anime given: bob the builder (94949/1205)
+${config.entryPrefix.toLowerCase()}bob the builder (94949/1205)
 
-score: **6/7 not on mal**
-group: 2
+		${config.scorePrefix.toLowerCase()}                **6/7 not on mal**
+      ${config.groupPrefix.toLowerCase()} 				2
 
-anime given: Sen to Chihiro no Kamikakushi (1/2)
-Score: ||4.5/10||
+${config.entryPrefix.toLowerCase()} 	Sen to ***Chihiro*** no Kamikakushi (1/2)
+	${config.scorePrefix.toUpperCase()}||4.5/10||
 
-group: 3
+${config.groupPrefix.toLowerCase()}**3**
 `;
 const mixedMatches = [
 	{
