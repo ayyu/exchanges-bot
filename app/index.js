@@ -1,7 +1,7 @@
 const { Collection } = require('discord.js');
 const { requireCommands } = require('./models/commands')(Collection);
 const keyvs = require('./services/keyv');
-const { client, token } = require('./services/discord-client');
+const client = require('./services/discord-client');
 
 client.commands = requireCommands(require('./commands')(keyvs));
 
@@ -17,5 +17,3 @@ client.on('interactionCreate', async interaction => {
 	if (!command) return;
 	return command.run(interaction);
 });
-
-client.login(token);

@@ -9,6 +9,6 @@ const client = new Client({ intents: [
 	Intents.FLAGS.GUILD_MESSAGES,
 ] });
 
-module.exports = {
-	client, token
-};
+client.login(token);
+
+module.exports = client;
