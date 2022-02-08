@@ -43,7 +43,7 @@ score: **6/7 not on mal**
 group: 2
 
 anime given: Sen to Chihiro no Kamikakushi (1/2)
-Score: ||4/10||
+Score: ||4.5/10||
 
 group: 3
 `;
@@ -56,7 +56,7 @@ const mixedMatches = [
 	{
 		group: '3',
 		entry: 'Sen to Chihiro no Kamikakushi',
-		score: '4/10'
+		score: '4.5/10'
 	},
 ];
 test('munge a post with duplicates and wrong order', () => {

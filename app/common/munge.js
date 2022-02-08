@@ -3,10 +3,10 @@ const format = require('./format');
 const regexes = {
 	group: /^Group:\s*([0-9]+)/i,
 	entry: /^Anime Given:\s*(.+)/i,
-	score: /^Score:\s*\(?(\d{1,3}\/\d{1,3})\)?/i,
+	score: /^Score:\s*\(?([\d\.]+\/\d+)\)?/i,
 };
 
-const reEntry = /\s+\([0-9]{1,2}\/[0-9]{1,2}\)$/i;
+const reEntry = /\s+\([0-9]+\/[0-9]+\)$/i;
 
 /**
  * @typedef {Object} Match
