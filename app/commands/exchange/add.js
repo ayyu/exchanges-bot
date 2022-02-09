@@ -36,11 +36,10 @@ module.exports = () => {
 		})
 			.then(() => {
 				interaction.channel.awaitMessages({ filter, max: 1, time: 60000, errors: ['time'] })
-					.then(collected => {
-						return interaction.channel.messages.fetchPinned(false)
+					.then(collected => interaction.channel.messages.fetchPinned(false)
 							.then(pins => pins.filter(message => {
 								const [header] = splitAndTrim(message.content, '\n');
-								return header.includes(format.group(match.group));
+								return header.includes(format.group(groupNumber));
 							}))
 							.then(pins => {
 								const pin = pins.first();
@@ -51,12 +50,12 @@ module.exports = () => {
 									+ content,
 								);
 							})
-							.then(() => collected.first.delete())
+							.then(() => collected.first().delete())
 							.then(() => interaction.followUp({
 								content: `Added to list in original message.`,
 								ephemeral: true
 							}))
-					})
+					)
 					.catch(() => {
 						interaction.followUp({
 							content: 'Command timed out. Please enter the list within 60 seconds.',
