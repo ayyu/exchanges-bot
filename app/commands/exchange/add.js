@@ -37,9 +37,7 @@ module.exports = () => {
 			.then(() => {
 				interaction.channel.awaitMessages({ filter, max: 1, time: 60000, errors: ['time'] })
 					.then(collected => {
-						/** @type {ThreadChannel} */
-						const thread = message.channel;
-						return thread.messages.fetchPinned(false)
+						return interaction.channel.messages.fetchPinned(false)
 							.then(pins => pins.filter(message => {
 								const [header] = splitAndTrim(message.content, '\n');
 								return header.includes(format.group(match.group));
