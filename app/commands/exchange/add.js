@@ -2,23 +2,21 @@ const { SlashCommandSubcommandBuilder } = require('@discordjs/builders');
 const { Collection } = require('discord.js');
 const { requireBotThread } = require('../../common/channels');
 const format = require('../../common/format');
+const { splitAndTrim } = require('../../common/munge');
 const { DiscordCommand } = require('../../models/commands')(Collection);
 /**
  * @typedef {import('discord.js').CommandInteraction} CommandInteraction
  * @typedef {import('discord.js').Message} Message
+ * @typedef {import('discord.js').ThreadChannel} ThreadChannel
  */
 
 module.exports = () => {
 	const data = new SlashCommandSubcommandBuilder()
-		.setName('list')
-		.setDescription('Post a list of entries given')
+		.setName('add')
+		.setDescription('Add to an existing a list of entries given')
 		.addIntegerOption(option => option
 			.setName('group')
 			.setDescription('Group number of the list')
-			.setRequired(true))
-		.addUserOption(option => option
-			.setName('host')
-			.setDescription('Host for this group')
 			.setRequired(true));
 
 	/** @param {CommandInteraction} interaction */
@@ -26,28 +24,40 @@ module.exports = () => {
 		requireBotThread(interaction);
 
 		const groupNumber = interaction.options.getInteger('group');
-		const hostMember = interaction.options.getMember('host');
 
 		/** @param {Message} response */
 		const filter = response => response.author.id == interaction.member.id;
 
 		return interaction.reply({
 			content:
-		'Paste the list of entries given now as a message, using one line per entry. You have 60 seconds to do so.',
+			'Paste the list of entries to add as a message, using one line per entry. You have 60 seconds to do so.',
 			ephemeral: true,
 			fetchReply: true,
 		})
 			.then(() => {
 				interaction.channel.awaitMessages({ filter, max: 1, time: 60000, errors: ['time'] })
 					.then(collected => {
-						const content = `${format.group(groupNumber)}, handed out by ${hostMember}\n`
-							+ format.formatMessageUnchecked(collected.first().content);
-						return interaction.followUp({
-							content,
-							fetchReply: true,
-						})
-							.then(list => list.pin())
-							.then(() => collected.first().delete());
+						/** @type {ThreadChannel} */
+						const thread = message.channel;
+						return thread.messages.fetchPinned(false)
+							.then(pins => pins.filter(message => {
+								const [header] = splitAndTrim(message.content, '\n');
+								return header.includes(format.group(match.group));
+							}))
+							.then(pins => {
+								const pin = pins.first();
+								const content = format.formatMessageUnchecked(collected.first().content);
+								return pin.edit(
+									pin.content
+									+ '\n'
+									+ content,
+								);
+							})
+							.then(() => collected.first.delete())
+							.then(() => interaction.followUp({
+								content: `Added to list in original message.`,
+								ephemeral: true
+							}))
 					})
 					.catch(() => {
 						interaction.followUp({
