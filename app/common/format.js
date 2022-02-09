@@ -9,6 +9,7 @@ const checked = line => `${config.checkSymbol} ${line}`;
 /**
  * @param {string} line
  * @param {string} score
+ * @returns {string}
  */
 const scored = (line, score) => {
 	return `${line} ${config.scoreFormat.replace(config.scoreToken, score)}`;
@@ -17,11 +18,27 @@ const scored = (line, score) => {
 /**
  * @param {string} line
  * @param {string} score
+ * @returns {string}
  */
 const completed = (line, score) => scored(checked(line), score);
 
-/** @param {string|number} number */
+/**
+ * @param {string|number} number
+ * @returns {string}
+ */
 const group = number => config.groupFormat.replace(config.groupToken, number);
+
+/**
+ * 
+ * @param {string|number} groupNumber
+ * @param {string} member
+ * @param {string|number} total
+ * @param {string|number} completed
+ * @returns {string}
+ */
+const listTitle = (groupNumber, member, total, finished = 0) => {
+	return [group(groupNumber), member, `**(${finished}/${total})**`].join(' ');
+};
 
 const markdownTokens = [
 	'||',
@@ -45,7 +62,7 @@ const formatMessageUnchecked = content => {
 };
 
 module.exports = {
-	group,
+	group, listTitle,
 	completed, scored, checked, unchecked,
 	stripMarkdown, formatMessageUnchecked,
 	config,
