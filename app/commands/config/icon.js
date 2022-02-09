@@ -9,9 +9,10 @@ module.exports = () => {
 	const data = new SlashCommandSubcommandBuilder()
 		.setName('icon')
 		.setDescription('Set the icon for this bot')
-		.addChannelOption(option => option
+		.addStringOption(option => option
 			.setName(optionName)
 			.setDescription('URL of icon to be used')
+			.setAutocomplete(false)
 			.setRequired(true));
 
 	/** @param {CommandInteraction} interaction */
