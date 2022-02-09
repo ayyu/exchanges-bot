@@ -1,4 +1,7 @@
+const { countFinishedLines, countTotalLines } = require('./count');
+const { MessageMentions: { USERS_PATTERN } } = require('discord.js');
 const format = require('./format');
+/** @typedef {import('discord.js').Message} Message */
 
 const regexes = {
 	group: new RegExp(`^${format.config.groupPrefix}\\s*([0-9]+)`, 'i'),
@@ -61,8 +64,7 @@ const updateMatchedLine = (message, match, trigger) => {
 		if (lines[i].toLowerCase() == format.unchecked(match.entry).toLowerCase()) {
 			const completed = format.completed(match.entry, match.score);
 			lines[i] = `${completed} ${trigger.member}`;
-			console.log(`New completion in ${message.guild.name}: ${completed} by ${trigger.member.tag}`);
-			return lines.reduce((edited, line) => edited + line + '\n', '');
+			return lines.reduce((content, line) => content + line + '\n', '');
 		}
 	}
 	return;
@@ -73,10 +75,29 @@ const updateMatchedLine = (message, match, trigger) => {
  * @param {string} delim
  * @returns {string[]}
  */
-const splitAndTrim = (input, delim) => input.split(delim).map(line => line.trim());
+const splitAndTrim = (input, delim = '\n') => input.split(delim).map(line => line.trim());
+
+/**
+ * @param {string} content
+ * @returns {string|null}
+ */
+const parseHost = line => line.match(USERS_PATTERN)[0] || '';
+
+/**
+ * @param {Message} message
+ */
+const updateListTitle = (content, group) => {
+	const lines = splitAndTrim(content, '\n');
+	const finished = countFinishedLines(lines);
+	const total = countTotalLines(lines);
+	const host = parseHost(lines[0]) ?? '';
+	lines[0] = format.listTitle(group, host, total, finished);
+	return lines.reduce((content, line) => content + line + '\n', '');
+}
 
 module.exports = {
 	regexes,
 	splitAndTrim,
 	matchLines, updateMatchedLine,
+	parseHost, updateListTitle,
 };

@@ -2,6 +2,8 @@ const { SlashCommandSubcommandBuilder } = require('@discordjs/builders');
 const { Collection } = require('discord.js');
 const { requireBotThread } = require('../../common/channels');
 const format = require('../../common/format');
+const { updateListTitle } = require('../../common/munge');
+const { timeout } = require('../../config/timeout');
 const { DiscordCommand } = require('../../models/commands')(Collection);
 /**
  * @typedef {import('discord.js').CommandInteraction} CommandInteraction
@@ -38,22 +40,35 @@ module.exports = () => {
 			fetchReply: true,
 		})
 			.then(() => {
-				interaction.channel.awaitMessages({ filter, max: 1, time: 60000, errors: ['time'] })
+				interaction.channel.awaitMessages({ filter, max: 1, time: timeout, errors: ['time'] })
 					.then(collected => {
-						const content = `${format.group(groupNumber)}, handed out by ${hostMember}\n`
-							+ format.formatMessageUnchecked(collected.first().content);
+						const formattedList = format.formatMessageUnchecked(collected.first().content);
+						const title = format.listTitle(groupNumber, hostMember, 0, 0);
+						const content = title + '\n' + formattedList;
 						return interaction.followUp({
 							content,
 							fetchReply: true,
 						})
-							.then(list => list.pin())
-							.then(() => collected.first().delete());
+							.then(reply => reply.edit(updateListTitle(reply.content, groupNumber)))
+							.then(reply => reply.pin())
+							.then(() => collected.first().delete())
+							.then(() => interaction.followUp({
+								content: `Posted and pinned list of entries given.`,
+								ephemeral: true
+							}));
 					})
-					.catch(() => {
-						interaction.followUp({
-							content: 'Command timed out. Please enter the list within 60 seconds.',
+					.catch(err => {
+						console.log(err);
+						if (typeof err == 'Collection' && err.size == 0) {
+							return interaction.followUp({
+							content: `Command timed out. Please enter the list within ${timeout/1000} seconds.`,
 							ephemeral: true,
-						});
+							});
+						}
+						return interaction.followUp({
+							content: err.message,
+							ephemeral: true,
+						})
 					});
 			});
 	};

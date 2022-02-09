@@ -1,5 +1,5 @@
 const { isBotThread } = require('../common/channels');
-const { matchLines, updateMatchedLine } = require('../common/munge');
+const { matchLines, updateMatchedLine, updateListTitle } = require('../common/munge');
 const { DiscordEvent } = require('../models/events');
 /** @typedef {import('discord.js').Message} Message */
 
@@ -14,8 +14,10 @@ const updatePins = async message => {
 		.then(async pins => Promise.all(pins.map(async pin => {
 			for (const match of matches) {
 				const updatedContents = updateMatchedLine(pin, match, message);
-				if (updatedContents) await pin.edit(updatedContents)
-					.then(edited => pin = edited);
+				if (updatedContents) await pin.edit(
+					updateListTitle(updatedContents, match.group))
+					.then(edited => pin = edited)
+					.then(() => console.log(`New completion in ${pin.guild.name} by ${message.member.user.tag}`));
 			}
 		})));
 };
