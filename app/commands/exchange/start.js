@@ -34,9 +34,10 @@ module.exports = keyvs => {
 			.then(reply => reply.startThread({
 				name: exchangeName,
 				autoArchiveDuration: 'MAX',
-				reason: 'New exchange started'
+				reason: 'New exchange started',
+				rateLimitPerUser: 60,
 			}));
 	};
 
 	return new DiscordCommand(data, execute);
-};
+};	
