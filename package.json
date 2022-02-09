@@ -19,12 +19,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@keyv/sqlite": "^3.0.0",
     "@types/jest": "^27.4.0",
     "eslint": "^8.8.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^26.1.0",
     "eslint-plugin-jsdoc": "^37.8.0",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "sqlite3": "^4.2.0"
   },
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
