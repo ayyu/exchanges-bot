@@ -80,11 +80,11 @@ const trigger = {
 }
 const output =
 `${format.group(2)}
-${format.completed('bob the builder', '6/7')} ${trigger.member}
+${format.completed('bob the builder', '6/7')}
 ${format.unchecked('snob the builder')}
 ${format.unchecked('bob the builder')}
 ${format.unchecked('bob the builder')}
 `;
 test('update lines in a post after watching', () => {
-	expect(munge.updateMatchedLine(pinInput, mixedMatches[0], trigger)).toBe(output);
+	expect(munge.updateMatchedLine(pinInput, mixedMatches[0])).toBe(output);
 });
