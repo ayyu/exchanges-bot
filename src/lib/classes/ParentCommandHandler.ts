@@ -15,7 +15,7 @@ export class ParentCommandHandler extends CommandHandler {
 		);
 	}
 
-	async run(interaction: CommandInteraction): Promise<any> {
+	async run(interaction: CommandInteraction): Promise<void> {
 		if (!interaction.options.getSubcommand(false))
 			return;
 		const subcommand = this.subcommands.get(interaction.options.getSubcommand());

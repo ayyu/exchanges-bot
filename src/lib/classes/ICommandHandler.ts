@@ -5,6 +5,6 @@ export type SlashCommandEitherBuilder = SlashCommandBuilder | SlashCommandSubcom
 
 export interface ICommandHandler {
 	data: SlashCommandEitherBuilder;
-	run: (interaction: CommandInteraction) => Promise<any>;
+	run: (interaction: CommandInteraction) => Promise<void>;
 	error: (interaction: CommandInteraction, err: Error) => Promise<void>;
 }

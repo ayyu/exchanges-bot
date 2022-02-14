@@ -1,8 +1,8 @@
 import { Collection, CommandInteraction } from "discord.js";
 import { SlashCommandEitherBuilder, ICommandHandler } from "./ICommandHandler";
 
-export type CollectCallback = (command: ICommandHandler) => any;
-export type CommandCallback = (interaction: CommandInteraction) => Promise<any>;
+export type CollectCallback = (command: ICommandHandler) => void;
+export type CommandCallback = (interaction: CommandInteraction) => Promise<void>;
 
 export class CommandHandler implements ICommandHandler {
 	data: SlashCommandEitherBuilder;
@@ -13,7 +13,7 @@ export class CommandHandler implements ICommandHandler {
 		this.execute = execute;
 	}
 
-	async run(interaction: CommandInteraction): Promise<any> {
+	async run(interaction: CommandInteraction): Promise<void> {
 		if (this.execute)
 			return this.execute(interaction)
 				.catch((err: Error) => this.error(interaction, err));
