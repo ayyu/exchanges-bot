@@ -60,9 +60,14 @@ const updateMatchedLine = (message, match) => {
 
 	if (!lines[0].includes(format.group(match.group))) return;
 
+	// nuke all mentions
+	for (let i = 1; i < lines.length; i++) {
+		lines[i] = lines[i].replace(USERS_PATTERN, '');
+	}
+
 	for (let i = 1; i < lines.length; i++) {
 		if (lines[i].toLowerCase() == format.unchecked(match.entry).toLowerCase()) {
-			lines[i] = format.completed(match.entry, match.score).replace(USERS_PATTERN, '');
+			lines[i] = format.completed(match.entry, match.score);
 			return lines.reduce((content, line) => content + line + '\n', '');
 		}
 	}
