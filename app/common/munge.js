@@ -55,15 +55,14 @@ const matchLines = content => {
  * @param {Message} trigger
  * @returns {string|null}
  */
-const updateMatchedLine = (message, match, trigger) => {
+const updateMatchedLine = (message, match) => {
 	const lines = splitAndTrim(message.content, '\n');
 
 	if (!lines[0].includes(format.group(match.group))) return;
 
 	for (let i = 1; i < lines.length; i++) {
 		if (lines[i].toLowerCase() == format.unchecked(match.entry).toLowerCase()) {
-			const completed = format.completed(match.entry, match.score);
-			lines[i] = `${completed} ${trigger.member}`;
+			lines[i] = format.completed(match.entry, match.score).replace(USERS_PATTERN, '');
 			return lines.reduce((content, line) => content + line + '\n', '');
 		}
 	}
