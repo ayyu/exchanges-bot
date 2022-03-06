@@ -113,3 +113,4 @@ config.json
 # Editor settings
 .vscode
 .eslintrc.*
+.prettierrc
