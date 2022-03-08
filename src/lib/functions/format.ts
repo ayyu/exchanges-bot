@@ -11,10 +11,22 @@ export function formatTitle(post: GroupPost): string {
 	return `**Group ${post.group}** <@${post.owner}> **(${post.countCompleted()}/${post.entries.length})**`;
 }
 
-const reMarkdown = /\*\*\*([^\n]+)\*\*\*|\*\*([^\n]+)\*\*|\*([^\n]+)\*|__([^\n]+)__|_([^\n]+)_|`([^\n]+)`|~~([^\n]+)~~/g;
+const markdownRegExps = [
+	/\*\*\*([^\n]+)\*\*\*/g,
+	/\*\*([^\n]+)\*\*/g,
+	/\*([^\n]+)\*/g,
+	/__([^\n]+)__/g,
+	/_([^\n]+)_/g,
+	/`([^\n]+)`/g,
+	/~~([^\n]+)~~/g,
+	/\|\|([^\n]+)\|\|/g,
+];
 
 export function stripMarkdown(input: string): string {
-	return input.replace(reMarkdown, "$1$2$3$4$5$6$7");
+	markdownRegExps.forEach((re) => {
+		input = input.replace(re, "$1");
+	});
+	return input;
 }
 
 export function splitAndTrim(input: string, delim = "\n") {

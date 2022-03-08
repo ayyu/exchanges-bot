@@ -10,7 +10,7 @@
 		"strict": true,
 		"sourceMap": true,
 		"moduleResolution": "node",
-		"types": ["node"],
+		"types": ["node", "jest"],
 		"outDir": "./dist"
 	},
 	"include": ["./src/**/*.ts"],
