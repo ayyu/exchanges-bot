@@ -1,7 +1,7 @@
 import { formatTitle, splitAndTrim, stripMarkdown } from "../functions/format";
 import { Entry } from "./Entry";
 
-const rePostTitle = /^Group (\d+)\s+<@(\d+)>/;
+const rePostTitle = /^Group (\d+)\s+<@!?(\d+)>/;
 
 export class GroupPost {
 	entries: Entry[];
