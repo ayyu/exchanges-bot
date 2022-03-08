@@ -6,7 +6,7 @@ const event: DiscordEvent = {
 	execute: async (message: Message) => {
 		if (message.author.id == message.client.user?.id
 			&& message.type == 'CHANNEL_PINNED_MESSAGE') {
-			message.delete();
+			await message.delete();
 		}
 	},
 }

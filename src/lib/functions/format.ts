@@ -12,14 +12,14 @@ export function formatTitle(post: GroupPost): string {
 }
 
 const markdownRegExps = [
-	/\*\*\*([^\n]+)\*\*\*/g,
-	/\*\*([^\n]+)\*\*/g,
-	/\*([^\n]+)\*/g,
-	/__([^\n]+)__/g,
-	/_([^\n]+)_/g,
-	/`([^\n]+)`/g,
-	/~~([^\n]+)~~/g,
-	/\|\|([^\n]+)\|\|/g,
+	/\*\*\*(.+?)\*\*\*/g,
+	/\*\*(.+?)\*\*/g,
+	/\*(.+?)\*/g,
+	/__(.+?)__/g,
+	/_(.+?)_/g,
+	/`(.+?)`/g,
+	/~~(.+?)~~/g,
+	/\|\|(.+?)\|\|/g,
 ];
 
 export function stripMarkdown(input: string): string {

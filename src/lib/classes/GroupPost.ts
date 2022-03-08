@@ -21,6 +21,7 @@ export class GroupPost {
 
 	static fromString(input: string): GroupPost | null {
 		const lines = splitAndTrim(stripMarkdown(input));
+		console.log(lines);
 
 		const title = lines.shift();
 		if (!title) return null;
@@ -44,6 +45,7 @@ export class GroupPost {
 
 	updateEntry(name: string, score: string, recipient: string): boolean {
 		for (const entry of this.entries) {
+			if (entry.score) continue;
 			if (name.toLowerCase() == entry.name.toLowerCase()) {
 				entry.score = score;
 				entry.recipient = recipient;

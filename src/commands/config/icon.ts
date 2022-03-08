@@ -16,11 +16,11 @@ const data = new SlashCommandSubcommandBuilder()
 async function execute(interaction: CommandInteraction): Promise<void> {
 	const icon = interaction.options.getString(optionName);
 	if (!interaction.client.user) return;
-	return interaction.client.user.setAvatar(icon)
-		.then(user => interaction.reply({
-			content: `Changed avatar to ${icon} for ${user}`,
-			ephemeral: true,
-		}));
+	const user = await interaction.client.user.setAvatar(icon);
+	await interaction.reply({
+		content: `Changed avatar to ${icon} for ${user}`,
+		ephemeral: true,
+	});
 }
 
 export default new CommandHandler(data, execute);

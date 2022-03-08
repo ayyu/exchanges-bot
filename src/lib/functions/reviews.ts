@@ -16,8 +16,6 @@ export function parseReviews(input: string): Review[] {
 	const groups = matchLines(lines, reGroup);
 	const scores = matchLines(lines, reScore);
 
-	console.log(names, groups, scores);
-
 	if (!names || !groups || !scores) return [];
 
 	return names.map((name, i) => ({

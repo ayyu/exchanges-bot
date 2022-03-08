@@ -19,10 +19,10 @@ const data = new SlashCommandSubcommandBuilder()
 		.setDescription('Which role to use as exchange host')
 		.setRequired(true));
 
-async function buildPermissionsOptions(
+async function buildPermissionData(
 	guild: Guild,
 	role: Role,
-): Promise<{guild: Guild, permissions: ApplicationCommandPermissionData[] }> {
+): Promise<ApplicationCommandPermissionData[]> {
 	const basePermissions = [
 		{
 			id: guild.ownerId,
@@ -40,29 +40,30 @@ async function buildPermissionsOptions(
 			permission: false,
 		},
 	];
-	const permissions = await guild.roles.fetch()
-		.then(roles => roles.filter(adminRole => adminRole.permissions.has(Permissions.FLAGS.ADMINISTRATOR)))
-		.then(adminRoles => adminRoles.map(adminRole => ({
-			id: adminRole.id,
-			type: ApplicationCommandPermissionTypes.ROLE,
-			permission: true,
-		})))
-		.then(adminPermissions => adminPermissions.concat(basePermissions))
-		.then(permissions => permissions
-			.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i));
-	return { guild, permissions };
+	const adminRoles = (await guild.roles.fetch())
+		.filter(role => role.permissions.has(Permissions.FLAGS.ADMINISTRATOR));
+	const adminPermissions: ApplicationCommandPermissionData[] = adminRoles.map(role => ({
+		id: role.id,
+		type: ApplicationCommandPermissionTypes.ROLE,
+		permission: true,
+	}));
+	const permissions = adminPermissions
+		.concat(basePermissions)
+		.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
+	return permissions;
 }
 
 async function execute(interaction: CommandInteraction): Promise<void> {
-	const role = interaction.options.getRole('role');
+	const role = interaction.options.getRole('role') as Role;
 	if (!role || !interaction.guild) return;
+	const guild = interaction.guild;
 
-	return interaction.guild.commands.fetch()
-		.then(commands => Promise.all(commands.map(async (command) => 
-			buildPermissionsOptions(interaction.guild as Guild, role as Role)
-				.then(options => command.permissions.set(options))
-		)))
-		.then(() => interaction.reply(`Set role for bot to ${role}`));
+	const commands = await interaction.guild.commands.fetch();
+	await Promise.all(commands.map(async (command) => {
+		const permissions = await buildPermissionData(guild, role);
+		guild.commands.permissions.set({ command, permissions });
+	}));
+	await interaction.reply(`Set role for bot to ${role}`);
 }
 
 export default new CommandHandler(data, execute);
