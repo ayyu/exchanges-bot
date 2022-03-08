@@ -29,7 +29,7 @@ export class Entry {
 		const symbol = (this.score) ? complete : incomplete;
 		let line = `${symbol} ${this.name}`;
 		if (this.score) line = `${line} ${formatScore(this.score)}`;
-		if (this.recipient) line = `${line} <@${this.recipient}>`;
+		//if (this.recipient) line = `${line} <@${this.recipient}>`;
 		return line;
 	}
 }

@@ -21,8 +21,7 @@ export class GroupPost {
 
 	static fromString(input: string): GroupPost | null {
 		const lines = splitAndTrim(stripMarkdown(input));
-		console.log(lines);
-
+		
 		const title = lines.shift();
 		if (!title) return null;
 		const matches = title.match(rePostTitle);
