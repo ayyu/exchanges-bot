@@ -24,5 +24,6 @@ container.registerInstance<Collection<string, Keyv>>("keyvs", keyvs);
 
 export {
 	container,
-	BotClient
+	BotClient,
+	Keyv
 };

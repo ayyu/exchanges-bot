@@ -2,9 +2,12 @@
 	"compilerOptions": {
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"target": "es6",
-		"module": "CommonJS",
 		"esModuleInterop": true,
+		"target": "ES2021",
+		"lib": [
+			"ES2021.String"
+		],
+		"module": "CommonJS",
 		"resolveJsonModule": true,
 		"declaration": true,
 		"strict": true,

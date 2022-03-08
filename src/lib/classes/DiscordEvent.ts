@@ -1,4 +1,6 @@
-type EventCallback = (model: unknown) => Promise<void> | void;
+import { Awaitable } from "discord.js";
+
+type EventCallback = (...args: any[]) => Awaitable<void>;
 
 export default interface DiscordEvent {
 	name: string;

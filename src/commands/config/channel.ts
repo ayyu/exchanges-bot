@@ -1,8 +1,7 @@
 import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { Collection, CommandInteraction } from "discord.js";
-import { container } from "tsyringe";
+import { container, Keyv } from "../../services";
 import { CommandHandler } from "../../lib/classes/CommandHandler";
-import { Keyv } from "../../services/keyvs";
 
 const optionName = "channel";
 
@@ -19,8 +18,10 @@ const data = new SlashCommandSubcommandBuilder()
 async function execute(interaction: CommandInteraction): Promise<void> {
 	const channel = interaction.options.getChannel(optionName);
 	const keyv = keyvs.get("channels");
-	if (keyv && interaction.guild && channel) keyv.set(interaction.guild.id, channel.id)
-		.then(() => interaction.reply(`Set exchange channel to ${channel}`));
+	if (keyv && interaction.guild && channel) {
+		await keyv.set(interaction.guild.id, channel.id);
+		await interaction.reply(`Set exchange channel to ${channel}`);
+	}
 }
 
 export default new CommandHandler(data, execute);
