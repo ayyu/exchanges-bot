@@ -1,7 +1,7 @@
 import { splitAndTrim, stripMarkdown } from "./format";
 
 const reGroup = /^Group:?\s*(\d+)/i;
-const reEntry = /^Anime(?: Given)?:\s*(.+?)(?:\s+\(\d+\/\d+\))$/i;
+const reEntry = /^Anime(?: Given)?:\s*(.+?)(?:\s+\(\d+\/\d+\))?$/i;
 const reScore = /^Score:\s*\(?([\d.]+\/\d+)\)?/i;
 
 interface Review {

@@ -3,10 +3,7 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"esModuleInterop": true,
-		"target": "ES2021",
-		"lib": [
-			"ES2021.String"
-		],
+		"target": "es6",
 		"module": "CommonJS",
 		"resolveJsonModule": true,
 		"declaration": true,
