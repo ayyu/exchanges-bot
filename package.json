@@ -50,6 +50,7 @@
     "keyv": "^4.1.1",
     "node.js": "^0.0.1-security",
     "reflect-metadata": "^0.1.13",
+    "tsc": "^2.0.4",
     "tsyringe": "^4.6.0"
   }
 }
