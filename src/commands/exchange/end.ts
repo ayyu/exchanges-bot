@@ -3,8 +3,6 @@ import { CommandInteraction, ThreadChannel } from 'discord.js';
 import { requireBotThread } from '../../lib/functions/channels';
 import { CommandHandler } from "../../lib/classes/CommandHandler";
 
-const reason = 'Exchange ended.';
-
 const data = new SlashCommandSubcommandBuilder()
 	.setName('end')
 	.setDescription('End an exchange thread by locking and unpinning');
@@ -15,8 +13,9 @@ async function execute(interaction: CommandInteraction) {
 	const thread = interaction.channel as ThreadChannel;
 
 	const starter = await thread.fetchStarterMessage({ force: true });
-	await starter.unpin();
+	const reason = 'Exchange ended.';
 	await thread.setLocked(true, reason);
+	await starter.unpin();
 }
 
 export default new CommandHandler(data, execute);
