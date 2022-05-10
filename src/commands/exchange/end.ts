@@ -16,6 +16,10 @@ async function execute(interaction: CommandInteraction) {
 	const reason = 'Exchange ended.';
 	await thread.setLocked(true, reason);
 	await starter.unpin();
+	await interaction.reply({
+		content: "Exchange ended. Thread locked and starter message unpinned.",
+		ephemeral: true,
+	});
 }
 
 export default new CommandHandler(data, execute);
