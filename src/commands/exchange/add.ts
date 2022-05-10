@@ -8,7 +8,7 @@ import { Entry } from '../../lib/classes/Entry';
 import { editGroupPost } from "../../lib/functions/posts";
 
 const data = new SlashCommandSubcommandBuilder()
-	.setName('list')
+	.setName('add')
 	.addIntegerOption(option => option
 		.setName('group')
 		.setDescription('Group number of the list to add to')
