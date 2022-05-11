@@ -1,6 +1,6 @@
 import { CommandInteraction, Message } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandHandler } from 'src/lib/classes/CommandHandler';
+import { CommandHandler } from '../lib/classes/CommandHandler';
 import { timeout } from '../config/timeout';
 
 const data = new SlashCommandBuilder()
