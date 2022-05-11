@@ -8,10 +8,10 @@ import { Entry } from '../../lib/classes/Entry';
 import { editGroupPost } from "../../lib/functions/posts";
 
 const data = new SlashCommandSubcommandBuilder()
-	.setName('add')
+	.setName('remove')
 	.addIntegerOption(option => option
 		.setName('group')
-		.setDescription('Group number of the list to add to')
+		.setDescription('Group number of the list to remove from')
 		.setRequired(true));
 
 async function execute(interaction: CommandInteraction): Promise<void> {
@@ -24,7 +24,7 @@ async function execute(interaction: CommandInteraction): Promise<void> {
 	const filter = (response: Message) => response.author.id == interaction.user.id;
 
 	await interaction.reply({
-		content: 'Paste the name of the entry to be added now. You have 60 seconds to do so.',
+		content: 'Paste the name of the entry to be removed. You have 60 seconds to do so.',
 		ephemeral: true,
 	});
 	const collected = await interaction.channel?.awaitMessages({ filter, max: 1, time: timeout, errors: ['time'] });
@@ -36,18 +36,22 @@ async function execute(interaction: CommandInteraction): Promise<void> {
 		return;
 	}
 	const entryName = collected.first()?.content;
-	await collected.first()?.delete();
 	if (!entryName) return;
+	await collected.first()?.delete();
 
 	const pins = await interaction.channel.messages.fetchPinned(false);
+	
 	for (const [, pin] of pins) {
 		const groupPost = GroupPost.fromString(pin.content);
 		if (!groupPost) continue;
 		if (groupPost.group == groupNumber.toString()) {
-			const newEntry = new Entry(entryName);
-			groupPost.entries.push(newEntry);
-			await editGroupPost(groupPost, pin);
-			break;
+			for (const [index, entry] of groupPost.entries.entries()) {
+				if (entry.name == entryName && !entry.score) {
+					groupPost.entries.splice(index, 1);
+					await editGroupPost(groupPost, pin);
+					return;
+				}
+			}
 		}
 	}
 }
