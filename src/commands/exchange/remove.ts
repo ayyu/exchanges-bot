@@ -9,6 +9,7 @@ import { editGroupPost } from "../../lib/functions/posts";
 
 const data = new SlashCommandSubcommandBuilder()
 	.setName('remove')
+	.setDescription('Remove an entry from an existing list of entries.')
 	.addIntegerOption(option => option
 		.setName('group')
 		.setDescription('Group number of the list to remove from')

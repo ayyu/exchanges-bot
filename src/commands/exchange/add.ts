@@ -9,6 +9,7 @@ import { editGroupPost } from "../../lib/functions/posts";
 
 const data = new SlashCommandSubcommandBuilder()
 	.setName('add')
+	.setDescription('Add an entry to an existing list of entries.')
 	.addIntegerOption(option => option
 		.setName('group')
 		.setDescription('Group number of the list to add to')
