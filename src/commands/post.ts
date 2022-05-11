@@ -25,7 +25,7 @@ async function execute(interaction: CommandInteraction): Promise<void> {
     const response = collected.first()?.content;
     await collected.first()?.delete();
     if (!response) return;
-    await interaction.followUp(response);
+    await interaction.channel?.send(response);
 }
 
 export default new CommandHandler(data, execute);
