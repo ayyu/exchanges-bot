@@ -11,7 +11,7 @@ async function execute(interaction: CommandInteraction): Promise<void> {
     const filter = (response: Message) => response.author.id == interaction.user.id;
 
 	await interaction.reply({
-		content: 'Paste the name of the entry to be added now. You have 60 seconds to do so.',
+		content: 'Enter the message to send from the bot. You have 60 seconds to do so.',
 		ephemeral: true,
 	});
 	const collected = await interaction.channel?.awaitMessages({ filter, max: 1, time: timeout, errors: ['time'] });
