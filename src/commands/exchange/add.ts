@@ -6,7 +6,7 @@ import { CommandHandler } from "../../lib/classes/CommandHandler";
 import { GroupPost } from '../../lib/classes/GroupPost';
 import { Entry } from '../../lib/classes/Entry';
 import { editGroupPost } from "../../lib/functions/posts";
-import { splitAndTrim } from "src/lib/functions/format";
+import { splitAndTrim } from "../../lib/functions/format";
 
 const data = new SlashCommandSubcommandBuilder()
 	.setName('add')
