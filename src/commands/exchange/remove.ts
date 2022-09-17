@@ -47,7 +47,7 @@ async function execute(interaction: CommandInteraction): Promise<void> {
 		if (!groupPost) continue;
 		if (groupPost.group == groupNumber.toString()) {
 			for (const [index, entry] of groupPost.entries.entries()) {
-				if (entry.name == entryName && !entry.score) {
+				if (entry.name == entryName) {
 					groupPost.entries.splice(index, 1);
 					await editGroupPost(groupPost, pin);
 					return;
